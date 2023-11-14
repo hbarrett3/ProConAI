@@ -159,3 +159,27 @@ function login() {
         }
     });
 }
+
+/**
+ * makes the password visible
+ */
+function showPass() {
+    var x = document.getElementById("sign-up-password-input");
+    if (x.type === "password") {
+        x.type = "text";
+    } else {
+        x.type = "password";
+    }
+  }
+  
+  /**
+   * makes the password visible for new accounts
+   */
+  function showNewPass() {
+    var x = document.getElementById("login-password-input");
+    if (x.type === "password") {
+        x.type = "text";
+    } else {
+        x.type = "password";
+    }
+  }
