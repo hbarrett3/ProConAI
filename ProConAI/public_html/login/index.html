@@ -1,0 +1,132 @@
+<!--
+
+    Authors: Jacob Truman
+             Daniel Lott
+             Harrison Barrett
+    
+    Instructor: Benjamin Dicken
+    Course: CSC 337
+
+    Project: ProConAI (Final Project)
+
+    Description:
+
+    This file contains the content for the login page for the website ProConAI
+
+-->
+
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+
+        <!--Meta declaration-->
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+        <!--Title-->
+        <title>
+            ProConAI
+        </title>
+
+        <!--For access to css-->
+        <link rel="stylesheet" type="text/css" href="styles.css">
+
+    </head>
+
+    <body>
+
+        <!--Title div-->
+        <div id = "title-div">
+
+            <div id="title-header">
+
+                <h1 id="procon-header">ProConAI</h1>
+                
+                <label for="search-input">Search Pros/Cons</label>
+                <br>
+                <input type="text" id="search-input">
+                <button id="search-button" onclick="search();">Search</button>
+            </div>
+
+            <div id="links">
+                <a class="link" href="../login/index.html">Login</a>
+                <a class="link" href="../home/index.html">Home</a>
+                <a class="link" href="../profile/index.html">Profile</a>
+            </div>
+
+        </div>
+
+        
+
+        <!--Content div-->
+        <div id = "content-section">
+
+            <!--Sign-up div-->
+            <div class="div" id="sign-up">
+
+                <!--Title for login div-->
+                <h1 id="sign-up-title">Sign Up</h1>
+
+                <br>
+                <br>
+
+                <!--Input for sign-up username-->
+                <label for="sign-up-username-input">Username</label>
+                <br>
+                <input type="text" id="sign-up-username-input">
+
+                <br>
+                <br>
+
+                <!--Input for sign-up password-->
+                <label for="sign-up-password-input">Password</label>
+                <br>
+                <input type="password" id="sign-up-password-input">
+
+                <br>
+                <br>
+
+                <!--Button for signing up-->
+                <button id="sign-up-button" onclick="addUser();">Sign Up</button>
+
+            </div>
+
+            <!--Login div-->
+            <div class="div" id="login">
+
+                <!--Title for login div-->
+                <h1 id="login-title">Login</h1>
+
+                <br>
+                <br>
+
+                <!--Input for login username-->
+                <label for="login-username-input">Username</label>
+                <br>
+                <input type="text" id="login-username-input">
+
+                <br>
+                <br>
+
+                <!--Input for login password-->
+                <label for="login-password-input">Password</label>
+                <br>
+                <input type="password" id="login-password-input">
+
+                <br>
+                <br>
+
+                <!--Button for logging in-->
+                <button id="login-button" onclick="login();">Login</button>
+
+            </div>
+
+        </div>
+        
+        <!--For access to javascript-->
+        <script src="script.js"></script>
+        
+    </body>
+
+</html>
