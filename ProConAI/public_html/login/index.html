@@ -31,6 +31,7 @@
 
         <!--For access to css-->
         <link rel="stylesheet" type="text/css" href="styles.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
 
     </head>
 
@@ -68,24 +69,19 @@
                 <!--Title for login div-->
                 <h1 id="sign-up-title">Sign Up</h1>
 
-                <br>
-                <br>
-
-                <!--Input for sign-up username-->
-                <label for="sign-up-username-input">Username</label>
-                <br>
-                <input type="text" id="sign-up-username-input">
-
-                <br>
-                <br>
-
-                <!--Input for sign-up password-->
-                <label for="sign-up-password-input">Password</label>
-                <br>
-                <input type="password" id="sign-up-password-input">
-                <input type="checkbox" onclick="showPass()">
-
-                <br>
+                <table>
+                    <tr>
+                        <td><label for="sign-up-username-input">Username:</label></td>
+                        <td><input type="text" id="sign-up-username-input"></td>
+                    </tr>
+                    <tr>
+                        <td><label for="sign-up-password-input">Password:</label></td>
+                        <td>
+                            <input type="password" id="sign-up-password-input">
+                            <i class="far fa-eye" id="eye" onclick="showPass()" onmouseover="changeSignUpIcon()" onmouseleave="changeSignUpIcon()"></i>
+                        </td>
+                    </tr>
+                </table>
                 <br>
 
                 <!--Button for signing up-->
@@ -99,24 +95,18 @@
                 <!--Title for login div-->
                 <h1 id="login-title">Login</h1>
 
-                <br>
-                <br>
-
-                <!--Input for login username-->
-                <label for="login-username-input">Username</label>
-                <br>
-                <input type="text" id="login-username-input">
-
-                <br>
-                <br>
-
-                <!--Input for login password-->
-                <label for="login-password-input">Password</label>
-                <br>
-                <input type="password" id="login-password-input">
-                <input type="checkbox" onclick="showNewPass()">
-
-                <br>
+                <table>
+                    <tr>
+                        <td><label for="login-username-input">Username:</label></td>
+                        <td><input type="text" id="login-username-input"></td>
+                    </tr>
+                    <tr>
+                        <td><label for="login-password-input">Password:</label></td>
+                        <td><input type="password" id="login-password-input">
+                            <i class="far fa-eye" id="eye" onclick="showNewPass()" onmouseover="changeLoginIcon()" onmouseleave="changeLoginIcon()"></i>
+                        </td>
+                    </tr>
+                </table>
                 <br>
 
                 <!--Button for logging in-->
