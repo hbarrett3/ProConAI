@@ -56,9 +56,17 @@ function search(){
             },
             body: JSON.stringify(proConData),
         })
-        .then((response) => {
-            window.alert("Searching: "+search_input.value);
-            goToSearchPage(search_input.value);
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok ' + response.statusText);
+            }
+            return response.json();
+        })
+        .then((data) => {
+            console.log("Server Response:", data); // Log the response data
+            window.alert("Search Completed: " + search_input.value);
+            window.alert("Server says: " + data.message); // Display the message from the server
+            // goToSearchPage(search_input.value);
         })
         // fail
         .catch((error) => {
@@ -70,6 +78,7 @@ function search(){
         window.alert("Field must be filled in");
     }
 }
+
 
 // -----------------------------------------------------------------------------------------------------------
 

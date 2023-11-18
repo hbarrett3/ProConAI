@@ -21,6 +21,8 @@ const parser = require('body-parser'); // used for JSON
 const cookieParser = require('cookie-parser');
 const cors = require('cors'); // allows access
 const mongoose = require("mongoose");
+const OpenAI = require("openai");
+const openai = new OpenAI();
 
 // Connect to MongoDB
 const db = mongoose.connection;
@@ -219,7 +221,22 @@ app.get('/get/popular/', ()=> {
 
 
 // SEARCH ----------------------------------------------------------------------------------------------------------------
-
+async function generateNew(query) {
+    try {
+        const completion = await openai.chat.completions.create({
+            messages: [{ role: "system", content: 
+                `x = ${query}. give me 3 pros and 3 cons of x.\
+                use 2 separate lists with descriptions. give me a \
+                list in brackets of 5 keywords that relate to x.` }],
+            model: "gpt-3.5-turbo",
+          });
+        
+          console.log(completion.choices[0].text);
+        return completion.choices[0].text; // Assuming you want the text response
+    } catch (error) {
+        console.error("Error in generating response:", error);
+    }
+  }
 
 
 // COMMENTS ----------------------------------------------------------------------------------------------------------------
@@ -229,12 +246,12 @@ app.get('/get/popular/', ()=> {
 // ----------------------------------------------------------------------------------------------------------------
 
 // method for getting ProCon
-app.post('/search/procon/', ()=> {
-    let p = ProCon.find({name: req.body.name}).exec();
-    p.then((documents) => {
-        // if ProCon doesn't exist already
-        if (documents.length == 0){
-            // new ProCon entry
+app.post('/search/procon/', async (req, res)=> {
+    try {
+        let documents = await ProCon.find({name: req.body.name}).exec();
+
+        if (documents.length === 0) {
+            let answer = await generateNew(req.body.name);
             let newProCon = new ProCon({
                 name: req.body.name,
                 accessCount: req.body.accessCount,
@@ -243,24 +260,15 @@ app.post('/search/procon/', ()=> {
                 UserPros: req.body.UserPros,
                 UserCons: req.body.UserCons
             });
-            newProCon.save()
-            .then(() => {
-                res.status(200).json({ status: "success", message: " added!" });
-            })
-            .catch((error) => {
-                console.log("PROBLEM SAVING NEW PROCON");
-                console.log(error);
-            });
+            await newProCon.save();
+            res.status(200).json({ status: "success", message: "ProCon added!" + answer });
+        } else {
+            res.end(JSON.stringify(documents[0])); // Assuming you want to return the first document
         }
-        // if ProCon already exists
-        else{
-            res.end(JSON.stringify(documents[i]));
-        }
-    })
-    .catch((error) => {
-        res.status(500).json({ status: "error", message: error });
-        console.log(error);
-    })
+    } catch (error) {
+        console.error("Error:", error);
+        res.status(500).json({ status: "error", message: error.message });
+    }
 });
 
 // Start the Express server
