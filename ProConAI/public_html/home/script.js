@@ -32,6 +32,14 @@ function goToCommentsPage(name){
     // window.location.href = '../comments/index.html/get/'+name;
 }
 
+// SEARCHING CODE -----------------------------------------------------------------------------------------------------------
+
+function displaySearchResults(data) {
+    let resultsDiv = document.getElementById("search-results");
+
+    resultsDiv.innerHTML = data;
+}
+
 function search(){
     let search_input = document.getElementById("search-input");
 
@@ -64,8 +72,8 @@ function search(){
         })
         .then((data) => {
             console.log("Server Response:", data); // Log the response data
-            window.alert("Search Completed: " + search_input.value);
-            window.alert("Server says: " + data.message); // Display the message from the server
+
+            displaySearchResults(data);
             // goToSearchPage(search_input.value);
         })
         // fail

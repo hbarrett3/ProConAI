@@ -27,7 +27,7 @@ const openai = new OpenAI();
 // Connect to MongoDB
 const db = mongoose.connection;
 const mongoDBURL = 'mongodb://127.0.0.1:27017/proConAI';
-mongoose.connect(mongoDBURL, { useNewUrlParser: true, useUnifiedTopology: true });
+mongoose.connect(mongoDBURL);
 db.on('error', () => {
     console.log('MongoDB connection error')
 });
@@ -128,7 +128,7 @@ app.use('/profile/index.html', authenticate);
 // ACCESS ----------------------------------------------------------------------------------------------------------------
 
 app.use(express.static('public_html')); // allows access to home
-app.use('*', authenticate);
+// app.use('*', authenticate);
 
 // LOGIN ----------------------------------------------------------------------------------------------------------------
 
@@ -224,15 +224,12 @@ app.get('/get/popular/', ()=> {
 async function generateNew(query) {
     try {
         const completion = await openai.chat.completions.create({
-            messages: [{ role: "system", content: 
-                `x = ${query}. give me 3 pros and 3 cons of x.\
-                use 2 separate lists with descriptions. give me a \
-                list in brackets of 5 keywords that relate to x.` }],
+            messages: [{ role: "system", content: `give me 3 pros and 3 cons of ${query}. use 2 separate lists.` }],
             model: "gpt-3.5-turbo",
-          });
-        
-          console.log(completion.choices[0].text);
-        return completion.choices[0].text; // Assuming you want the text response
+        });
+
+        console.log(completion.choices[0].message.content);
+        return completion.choices[0].message.content;
     } catch (error) {
         console.error("Error in generating response:", error);
     }
@@ -248,26 +245,27 @@ async function generateNew(query) {
 // method for getting ProCon
 app.post('/search/procon/', async (req, res)=> {
     try {
-        let documents = await ProCon.find({name: req.body.name}).exec();
+        // let documents = await ProCon.find({name: req.body.name}).exec();
 
-        if (documents.length === 0) {
-            let answer = await generateNew(req.body.name);
-            let newProCon = new ProCon({
-                name: req.body.name,
-                accessCount: req.body.accessCount,
-                AIPros: req.body.AIPros, 
-                AICons: req.body.AICons,
-                UserPros: req.body.UserPros,
-                UserCons: req.body.UserCons
-            });
-            await newProCon.save();
-            res.status(200).json({ status: "success", message: "ProCon added!" + answer });
-        } else {
-            res.end(JSON.stringify(documents[0])); // Assuming you want to return the first document
-        }
+        // if (documents.length === 0) {
+        //     let answer = await generateNew(req.body.name);
+        //     let newProCon = new ProCon({
+        //         name: req.body.name,
+        //         accessCount: req.body.accessCount,
+        //         AIPros: req.body.AIPros, 
+        //         AICons: req.body.AICons,
+        //         UserPros: req.body.UserPros,
+        //         UserCons: req.body.UserCons
+        //     });
+        //     await newProCon.save();
+        //     res.status(200).json({ status: "success", message: "ProCon added!" + answer });
+        // } else {
+            // res.end(JSON.stringify(documents[0])); // Assuming you want to return the first document
+        // }
+        res.json(await generateNew(req.body.name));
     } catch (error) {
-        console.error("Error:", error);
-        res.status(500).json({ status: "error", message: error.message });
+        console.error(error);
+        res.status(500).send('An error occurred in /search/procon');
     }
 });
 

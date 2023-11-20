@@ -54,6 +54,15 @@ body{
     z-index: 10;
 }
 
+#search-results {
+    margin-top: 140px;
+    padding: 10px;
+    word-wrap: break-word;
+    overflow: hidden;
+}
+
+
+
 .link{
     color: white;
     margin: 2%;

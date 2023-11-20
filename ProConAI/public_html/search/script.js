@@ -32,6 +32,13 @@ function goToCommentsPage(name){
     // window.location.href = '../comments/index.html/get/'+name;
 }
 
+function displaySearchResults(data) {
+    let resultsDiv = document.getElementById("search-results");
+
+    let formattedData = data.replace(/\n/g, '<br>');
+    resultsDiv.innerHTML = formattedData;
+}
+
 function search(){
     let search_input = document.getElementById("search-input");
 
@@ -56,9 +63,17 @@ function search(){
             },
             body: JSON.stringify(proConData),
         })
-        .then((response) => {
-            window.alert("Searching: "+search_input.value);
-            goToSearchPage(search_input.value);
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok ' + response.statusText);
+            }
+            return response.json();
+        })
+        .then((data) => {
+            console.log("Server Response:", data); // Log the response data
+
+            displaySearchResults(data);
+            // goToSearchPage(search_input.value);
         })
         // fail
         .catch((error) => {
