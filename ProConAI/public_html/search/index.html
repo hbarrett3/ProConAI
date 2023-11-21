@@ -18,54 +18,72 @@
 <!DOCTYPE html>
 <html lang="en">
 
-    <head>
+<head>
 
-        <!--Meta declaration-->
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!--Meta declaration-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-        <!--Title-->
-        <title>
-            ProConAI
-        </title>
+    <!--Title-->
+    <title>
+        ProConAI
+    </title>
 
-        <!--For access to css-->
-        <link rel="stylesheet" type="text/css" href="styles.css">
+    <!--For access to css-->
+    <link rel="stylesheet" type="text/css" href="styles.css">
 
-    </head>
+</head>
 
-    <body>
+<body>
 
-        <!--Title div-->
-        <div id = "title-div">
+    <!--Title div-->
+    <div id="title-div">
 
-            <div id="title-header">
+        <div id="title-header">
 
-                <h1 id="procon-header">ProConAI</h1>
-    
-                <label for="search-input">Search Pros/Cons</label>
-                <br>
-                <input type="text" id="search-input">
-                <button id="search-button"  onclick="search();">Search</button>
-            </div>
+            <h1 id="procon-header">ProConAI</h1>
 
-            <div id="links">
-                <a class="link" href="../login/index.html">Login</a>
-                <a class="link" href="../home/index.html">Home</a>
-                <a class="link" href="../profile/index.html">Profile</a>
-            </div>
-
+            <label for="search-input">Search Pros/Cons</label>
+            <br>
+            <input type="text" id="search-input">
+            <button id="search-button" onclick="search();">Search</button>
         </div>
 
-        <!-- Search Results Div -->
-        <div id="search-results">
-            <!-- Results will be displayed here -->
-            <div id="search-results">Pros of Skipping Classes on Tuesday:<br>1. Free Time: Skipping classes on Tuesday allows you to have more free time to engage in other activities, pursue personal interests, or simply relax and recharge.<br>2. Avoidance of Uninteresting or Irrelevant Material: By skipping classes, you have the chance to avoid lectures or discussions that you may find uninteresting, repetitive, or not necessary for your academic goals.<br>3. Flexibility in Scheduling: Skipping classes on Tuesday can provide flexibility in your schedule, enabling you to allocate time to important commitments, such as part-time jobs, internships, or personal responsibilities.<br><br>Cons of Skipping Classes on Tuesday:<br>1. Missed Learning Opportunities: Skipping classes means missing out on important information and learning opportunities that can contribute to your academic success and understanding of the subject.<br>2. Difficulty in Catching Up: Choosing to skip classes on Tuesday can lead to difficulty in catching up with missed lectures, assignments, or discussions, resulting in added stress and potentially lower grades.<br>3. Lack of Accountability: Repeatedly skipping classes on Tuesday can foster a lack of accountability and discipline, which may negatively impact your overall academic performance, motivation, and work ethic.</div>
+        <div id="links">
+            <a class="link" href="../login/index.html">Login</a>
+            <a class="link" href="../home/index.html">Home</a>
+            <a class="link" href="../profile/index.html">Profile</a>
         </div>
-        
-        <!--For access to javascript-->
-        <script src="script.js"></script>
-        
-    </body>
+
+    </div>
+
+    <!-- Search Results Div -->
+    <div id="search-results">
+        <!-- Results will be displayed here -->
+        <div id="search-results">EXAMPLE TEXT: <br><br>Pros of Skipping Classes on Tuesday:<br>1. Free Time: Skipping classes on Tuesday
+            allows you to have more free time to engage in other activities, pursue personal interests, or simply relax
+            and recharge.<br>2. Avoidance of Uninteresting or Irrelevant Material: By skipping classes, you have the
+            chance to avoid lectures or discussions that you may find uninteresting, repetitive, or not necessary for
+            your academic goals.<br>3. Flexibility in Scheduling: Skipping classes on Tuesday can provide flexibility in
+            your schedule, enabling you to allocate time to important commitments, such as part-time jobs, internships,
+            or personal responsibilities.<br><br>Cons of Skipping Classes on Tuesday:<br>1. Missed Learning
+            Opportunities: Skipping classes means missing out on important information and learning opportunities that
+            can contribute to your academic success and understanding of the subject.<br>2. Difficulty in Catching Up:
+            Choosing to skip classes on Tuesday can lead to difficulty in catching up with missed lectures, assignments,
+            or discussions, resulting in added stress and potentially lower grades.<br>3. Lack of Accountability:
+            Repeatedly skipping classes on Tuesday can foster a lack of accountability and discipline, which may
+            negatively impact your overall academic performance, motivation, and work ethic.</div>
+    </div>
+
+    <!-- Loading Animation Div -->
+    <div id="loading-animation" style="display: none;">
+        <!-- Simple spinner example -->
+        <div class="loader"></div>
+    </div>
+
+    <!--For access to javascript-->
+    <script src="script.js"></script>
+
+</body>
 
 </html>

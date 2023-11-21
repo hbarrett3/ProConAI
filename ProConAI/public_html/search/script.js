@@ -40,11 +40,17 @@ function displaySearchResults(data) {
 }
 
 function search(){
-    let search_input = document.getElementById("search-input");
+    // window.location.href = 'search/index.html?query=' + encodeURIComponent(search_input.value);
 
-    // checking if both inputs are not empty (will execute if true)
+    let search_input = document.getElementById("search-input");
+    let loadingAnimation = document.getElementById("loading-animation");
+    let resultsDiv = document.getElementById("search-results");
+
+    // checking if input is not empty (will execute if true)
     if (search_input.value.length > 0)
     {
+        resultsDiv.innerHTML = '';
+        loadingAnimation.style.display = 'block';
         // Create new ProCon
         let proConData = {
             name: search_input.value,
@@ -71,12 +77,13 @@ function search(){
         })
         .then((data) => {
             console.log("Server Response:", data); // Log the response data
-
+            loadingAnimation.style.display = 'none';
             displaySearchResults(data);
             // goToSearchPage(search_input.value);
         })
         // fail
         .catch((error) => {
+            loadingAnimation.style.display = 'none';
             window.alert("SERVER NOT RESPONDING");
             console.error("Error:", error);
         });
@@ -86,4 +93,14 @@ function search(){
     }
 }
 
+function onPageLoadSearch() {
+    const urlParams = new URLSearchParams(window.location.search);
+    const query = urlParams.get('query');
+
+    if (query) {
+        search();
+    }
+}
 // -----------------------------------------------------------------------------------------------------------
+
+document.addEventListener('DOMContentLoaded', onPageLoadSearch);

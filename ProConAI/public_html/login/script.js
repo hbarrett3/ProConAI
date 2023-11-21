@@ -32,42 +32,12 @@ function goToCommentsPage(name){
     // window.location.href = '../comments/index.html/get/'+name;
 }
 
-function search(){
+function search() {
     let search_input = document.getElementById("search-input");
 
-    // checking if both inputs are not empty (will execute if true)
-    if (search_input.value.length > 0)
-    {
-        // Create new ProCon
-        let proConData = {
-            name: search_input.value,
-            accessCount: 1,
-            AIPros: [],
-            AICons: [],
-            UserPros: [],
-            UserCons: [],
-        };
-        
-        // Send the ProCon data to the server
-        fetch('/search/procon/', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(proConData),
-        })
-        .then((response) => {
-            window.alert("Searching: "+search_input.value);
-            goToSearchPage(search_input.value);
-        })
-        // fail
-        .catch((error) => {
-            window.alert("SERVER NOT RESPONDING");
-            console.log("Error:", error);
-        });
-    }
-    else{
-        window.alert("Field must be filled in");
+    if (search_input.value.length > 0) {
+        // Redirect to the new page with the search query as a parameter
+        window.location.href = 'search/index.html?query=' + encodeURIComponent(search_input.value);
     }
 }
 

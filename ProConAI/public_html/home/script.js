@@ -34,56 +34,18 @@ function goToCommentsPage(name){
 
 // SEARCHING CODE -----------------------------------------------------------------------------------------------------------
 
-function displaySearchResults(data) {
-    let resultsDiv = document.getElementById("search-results");
+// function displaySearchResults(data) {
+//     let resultsDiv = document.getElementById("search-results");
 
-    resultsDiv.innerHTML = data;
-}
+//     resultsDiv.innerHTML = data;
+// }
 
-function search(){
+function search() {
     let search_input = document.getElementById("search-input");
 
-    // checking if both inputs are not empty (will execute if true)
-    if (search_input.value.length > 0)
-    {
-        // Create new ProCon
-        let proConData = {
-            name: search_input.value,
-            accessCount: 1,
-            AIPros: [],
-            AICons: [],
-            UserPros: [],
-            UserCons: [],
-        };
-        
-        // Send the ProCon data to the server
-        fetch('/search/procon/', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(proConData),
-        })
-        .then(response => {
-            if (!response.ok) {
-                throw new Error('Network response was not ok ' + response.statusText);
-            }
-            return response.json();
-        })
-        .then((data) => {
-            console.log("Server Response:", data); // Log the response data
-
-            displaySearchResults(data);
-            // goToSearchPage(search_input.value);
-        })
-        // fail
-        .catch((error) => {
-            window.alert("SERVER NOT RESPONDING");
-            console.error("Error:", error);
-        });
-    }
-    else{
-        window.alert("Field must be filled in");
+    if (search_input.value.length > 0) {
+        // Redirect to the new page with the search query as a parameter
+        window.location.href = 'search/index.html?query=' + encodeURIComponent(search_input.value);
     }
 }
 
