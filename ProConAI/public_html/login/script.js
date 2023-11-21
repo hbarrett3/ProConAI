@@ -134,7 +134,8 @@ function login() {
  * makes the password visible
  */
 function showPass() {
-    var x = document.getElementById("sign-up-password-input");
+    changeLoginIcon();
+    var x = document.getElementById("login-password-input");
     if (x.type === "password") {
         x.type = "text";
     } else {
@@ -146,7 +147,8 @@ function showPass() {
   * makes the password visible for new accounts
   */
 function showNewPass() {
-    var x = document.getElementById("login-password-input");
+    changeSignUpIcon()
+    var x = document.getElementById("sign-up-password-input");
     if (x.type === "password") {
         x.type = "text";
     } else {
@@ -155,19 +157,19 @@ function showNewPass() {
 }
 
 function changeSignUpIcon() {
-    var x = document.querySelector('i:nth-of-type(1)');
-    if (x.className ==="far fa-eye") {
-        x.className = "far fa-eye-slash";
-    } else {
+    var x = document.getElementById('eyeSignup');
+    if (x.className ==="far fa-eye-slash") {
         x.className = "far fa-eye";
+    } else {
+        x.className = "far fa-eye-slash";
     }
 }
 
 function changeLoginIcon() {
-    var x = document.querySelector('i:nth-of-type(2)');
-    if (x.className ==="far fa-eye") {
-        x.className = "far fa-eye-slash";
-    } else {
+    var x = document.getElementById('eyeLogin');
+    if (x.className ==="far fa-eye-slash") {
         x.className = "far fa-eye";
+    } else {
+        x.className = "far fa-eye-slash";
     }
 }
