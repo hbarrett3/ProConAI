@@ -60,12 +60,10 @@ function addUser(){
         };
         
         // Send the user data to the server
-        fetch('/add/user/', {
+        let p = fetch('/add/user/', {
             method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(userData),
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify(userData)
         })
         .then((response) => {
             // this is for dealing with the error thrown in server.js when a User with
