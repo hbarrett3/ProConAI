@@ -12,6 +12,10 @@
 
     This file is the client-side javascript for the search page for the website ProConAI
 */
+// QUERY PROCESSING -----------------------------------------------------------------------------------------------------------
+
+
+    
 
 // COMMON CODE -----------------------------------------------------------------------------------------------------------
 
@@ -54,11 +58,6 @@ function search(){
         // Create new ProCon
         let proConData = {
             name: search_input.value,
-            accessCount: 1,
-            AIPros: [],
-            AICons: [],
-            UserPros: [],
-            UserCons: [],
         };
         
         // Send the ProCon data to the server
@@ -76,7 +75,7 @@ function search(){
             return response.json();
         })
         .then((data) => {
-            console.log("Server Response:", data); // Log the response data
+            // console.log("Server Response:", data); // Log the response data
             loadingAnimation.style.display = 'none';
             displaySearchResults(data);
             // goToSearchPage(search_input.value);

@@ -13,7 +13,7 @@
     This file is the server for the website ProConAI
 */
 
-const port = 80; // port
+const port = 3000; // port
 const DOURL = '127.0.0.1'; // URL for Digital Ocean
 const express = require('express');
 const app = express();
@@ -46,10 +46,8 @@ var User = mongoose.model('User', UserSchema);
 var ProConSchema = new mongoose.Schema({
     name: String,
     accessCount: Number,
-    AIPros: [String], // should be AIResponseSchema
-    AICons: [String], // should be AIResponseSchema
-    UserPros: [String], // should be UserPostSchema
-    UserCons: [String] // should be AIResponseSchema
+    resp: String,
+    keywords: String
 });
 var ProCon = mongoose.model('ProCon', ProConSchema);
 
@@ -221,6 +219,11 @@ app.get('/get/popular/', ()=> {
 
 
 // SEARCH ----------------------------------------------------------------------------------------------------------------
+/**
+ * generates a new pro/con list based on the query
+ * @param {String} query 
+ * @returns 
+ */
 async function generateNew(query) {
     try {
         const completion = await openai.chat.completions.create({
@@ -228,13 +231,102 @@ async function generateNew(query) {
             model: "gpt-3.5-turbo",
         });
 
-        console.log(completion.choices[0].message.content);
+        // console.log(completion.choices[0].message.content);
         return completion.choices[0].message.content;
     } catch (error) {
         console.error("Error in generating response:", error);
     }
   }
 
+  /**
+   * generates new keywords for the query
+   * @param {String} query 
+   * @returns 
+   */
+  async function generateKeywords(query) {
+    try {
+        const completion = await openai.chat.completions.create({
+            messages: [{ role: "system", content: `give me 3 comma-separated keywords (not phrases) for this phrase: ${query}.` }],
+            model: "gpt-3.5-turbo",
+        });
+
+        // console.log(completion.choices[0].message.content);
+        return completion.choices[0].message.content;
+    } catch (error) {
+        console.error("Error in generating response:", error);
+    }
+  }
+
+//   generateKeywords("buying myself a new dog");
+
+  const natural = require('natural');
+  const tokenizer = new natural.WordTokenizer();
+  const stemmer = natural.PorterStemmer;
+  
+  /**
+   * Normalizes the query by tokenizing, stemming, and joining the tokens
+   * @param {*} query 
+   * @returns 
+   */
+  function normalizeKeywords(query){
+      return tokenizer.tokenize(query.toLowerCase())
+          .map(token => stemmer.stem(token))
+          .join(' ');
+  }
+  
+  function compareKeywords(query1, query2){
+      words1 = new Set(query1.split(' '));
+      words2 = new Set(query2.split(' '));
+  
+      let intersection = new Set([...words1].filter(x => words2.has(x)));
+      let union = new Set([...words1, ...words2]);
+  
+      return intersection.size / union.size;
+  }
+//   similarityScore = compareKeywords(normalizeKeywords("dog, pet, ownership"), normalizeKeywords("dog, buying, ownership"));
+//   console.log('Similarity Score:', similarityScore);
+
+/**
+ * contains the generation logic
+ * @param {String} query 
+ * @return {ProCon} database entry
+ */
+async function generation(newQuery) {
+    return new Promise(async (resolve, reject) => {
+        let map = new Map();
+        let newKeywords = await generateKeywords(newQuery);
+
+        try {
+            let documents = await ProCon.find({}).exec();
+
+            documents.forEach(doc => {
+                let similarityScore = compareKeywords(normalizeKeywords(newKeywords), normalizeKeywords(doc.keywords));
+                if (similarityScore > 0.5) {
+                    map.set(doc, similarityScore);
+                }
+            });
+
+            if (map.size > 0) {
+                let sortedMap = new Map([...map.entries()].sort((a, b) => b[1] - a[1]));
+                let firstEntry = sortedMap.entries().next().value[0];
+                firstEntry.accessCount++;
+                resolve(firstEntry.resp);
+            } else {
+                let respValue = await generateNew(newQuery);
+                let newEntry = new ProCon({
+                    name: newQuery,
+                    accessCount: 1,
+                    resp: respValue,
+                    keywords: newKeywords
+                });
+                await newEntry.save();
+                resolve(newEntry.resp);
+            }
+        } catch (error) {
+            reject(error);
+        }
+    });
+}
 
 // COMMENTS ----------------------------------------------------------------------------------------------------------------
 
@@ -245,24 +337,9 @@ async function generateNew(query) {
 // method for getting ProCon
 app.post('/search/procon/', async (req, res)=> {
     try {
-        // let documents = await ProCon.find({name: req.body.name}).exec();
-
-        // if (documents.length === 0) {
-        //     let answer = await generateNew(req.body.name);
-        //     let newProCon = new ProCon({
-        //         name: req.body.name,
-        //         accessCount: req.body.accessCount,
-        //         AIPros: req.body.AIPros, 
-        //         AICons: req.body.AICons,
-        //         UserPros: req.body.UserPros,
-        //         UserCons: req.body.UserCons
-        //     });
-        //     await newProCon.save();
-        //     res.status(200).json({ status: "success", message: "ProCon added!" + answer });
-        // } else {
-            // res.end(JSON.stringify(documents[0])); // Assuming you want to return the first document
-        // }
-        res.json(await generateNew(req.body.name));
+        results = await generation(req.body.name)
+        console.log("line 358", results);
+        res.json(results);
     } catch (error) {
         console.error(error);
         res.status(500).send('An error occurred in /search/procon');
