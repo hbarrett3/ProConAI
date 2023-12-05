@@ -120,9 +120,6 @@ app.use(express.json());
 app.use(cors()); // allows access
 app.use(cookieParser()); // used for parsing cookies
 
-// ensures authentication if users attempt to access the profile page
-app.use('/profile/index.html', authenticate);
-
 // ACCESS ----------------------------------------------------------------------------------------------------------------
 
 app.use(express.static('public_html')); // allows access to home
@@ -205,6 +202,7 @@ app.post('/add/user/', (req, res) => {
 app.get('/get/popular/', ()=> {
     let p = ProCon.find({}).exec();
     p.then((documents) => {
+        for (var i = 0; i < documents.length; )
         res.end(JSON.stringify(documents[i]));
     })
     .catch((error) => {
@@ -212,7 +210,6 @@ app.get('/get/popular/', ()=> {
         console.log(error);
     })
 });
-
 
 // PROFILE ----------------------------------------------------------------------------------------------------------------
 
