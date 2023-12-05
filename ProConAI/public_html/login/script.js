@@ -108,7 +108,7 @@ function login() {
     let password_input = document.getElementById('login-password-input').value;
     let newUser = {username: username_input, password: password_input}; // user sent to server to check
 
-    let p = fetch('user/login/', {
+    let p = fetch('/user/login/', {
         method: 'POST', 
         body: JSON.stringify(newUser), // sending user
         headers: {"Content-Type": "application/json"}
@@ -119,7 +119,7 @@ function login() {
     .then((text) => {
         // success
         if (text.startsWith('SUCCESS')) {
-            alert('Welcome '+username_input);
+            alert('Welcome ' + username_input);
             goToHomePage(); // sending user to home page
         } 
         else {

@@ -21,8 +21,8 @@ const parser = require('body-parser'); // used for JSON
 const cookieParser = require('cookie-parser');
 const cors = require('cors'); // allows access
 const mongoose = require("mongoose");
-const OpenAI = require("openai");
-const openai = new OpenAI();
+//const OpenAI = require("openai");
+//const openai = new OpenAI();
 
 // Connect to MongoDB
 const db = mongoose.connection;
@@ -132,7 +132,7 @@ app.use(express.static('public_html')); // allows access to home
 
 // this method logs in a user
 // if the username and password typed in match inside the DB, then the server responds with a success message
-app.post('user/login/', (req, res) => {
+app.post('/user/login/', (req, res) => {
     let u = req.body;
     let p1 = User.find({username: u.username, password: u.password}).exec();
     p1.then( (results) => { 
