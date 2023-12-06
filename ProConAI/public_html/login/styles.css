@@ -34,7 +34,7 @@ body{
 }
 
 #title-div{
-    position: sticky;
+    position: fixed;
     height: 150px;
     width: 100vw;
     margin: 0%;
@@ -87,7 +87,7 @@ i {
 }
 
 #content-section{
-    margin-top: 8%;
+    margin-top: 2%;
     position: relative;
     height: 70vh;
     width: 100vw;
