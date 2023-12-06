@@ -39,6 +39,7 @@ function search() {
 
     if (search_input.value.length > 0) {
         // Redirect to the search page, filling in the search field with the query, and calling search(false) in the search pages's script.js
+        window.location.href = '../search/index.html?name=' + encodeURIComponent(search_input.value);
     }
 }
 
