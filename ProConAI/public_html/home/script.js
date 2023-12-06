@@ -39,7 +39,6 @@ function search() {
 
     if (search_input.value.length > 0) {
         // Redirect to the search page, filling in the search field with the query, and calling search(false) in the search pages's script.js
-        
     }
 }
 
@@ -58,16 +57,15 @@ function fillPopular(){
         objects.sort((a, b) => b.accessCount - a.accessCount); // sorting
         // displaying items on home page
         let html = '';
-        
+
         for (let i = 0; i < objects.length; i++) {
-            if (i > 4){
+            if (i > 4) {
                 break;
             }
-            html += '<a class = "popular-searches" href = "../search/index.html/'+ objects[i].name +
-                    '">'+objects[i].name+'</a><h2>'+objects[i].accessCount+'</h2><br><br>';
+            html += '<a class="popular-searches" href="../search/index.html?name=' + encodeURIComponent(objects[i].name) + '">' + objects[i].name + '</a><h2>' + objects[i].accessCount + '</h2><br><br>';
         }
-      let popular_div = document.getElementById('popular-div');
-      popular_div.innerHTML = html;
+        let popular_div = document.getElementById('popular-div');
+        popular_div.innerHTML = html;
     }).catch(() => {
         alert('something went wrong');
     });

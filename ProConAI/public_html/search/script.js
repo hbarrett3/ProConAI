@@ -185,14 +185,16 @@ function search(regenerate){
     }
 }
 
-function onPageLoadSearch() {
-    const urlParams = new URLSearchParams(window.location.search);
-    const query = urlParams.get('query');
-
-    if (query) {
-        search();
-    }
+function fillSearchInput(query) {
+    let searchInput = document.getElementById("search-input");
+    searchInput.value = query;
 }
-// -----------------------------------------------------------------------------------------------------------
 
-document.addEventListener('DOMContentLoaded', onPageLoadSearch);
+document.addEventListener('DOMContentLoaded', (event) => {
+    const params = new URLSearchParams(window.location.search);
+    const name = params.get('name');
+    if (name) {
+        fillSearchInput(name);
+        search(false);
+    }
+});
