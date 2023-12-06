@@ -25,7 +25,7 @@ body{
 }
 
 #title-div{
-    position: sticky;
+    position: fixed;
     height: 150px;
     width: 100vw;
     margin: 0%;
@@ -62,7 +62,7 @@ body{
 
 #search-results {
     display: block;
-    margin-top: 10px;
+    margin-top: 2%;
     padding: 10px;
     word-wrap: break-word;
     overflow: hidden;
@@ -70,7 +70,7 @@ body{
 
 #regenerate-button {
     display: block;
-    margin-top: 10px;
+    margin-top: 14%;
     margin-left: 20px;
     padding: 10px;
     word-wrap: break-word;
