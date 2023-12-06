@@ -21,8 +21,8 @@ const parser = require('body-parser'); // used for JSON
 const cookieParser = require('cookie-parser');
 const cors = require('cors'); // allows access
 const mongoose = require("mongoose");
-//const OpenAI = require("openai");
-//const openai = new OpenAI();
+const OpenAI = require("openai");
+const openai = new OpenAI();
 
 // Connect to MongoDB
 const db = mongoose.connection;
