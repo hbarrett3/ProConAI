@@ -97,7 +97,7 @@ function displaySearchResults(data) {
 
     let resultsDiv = document.getElementById("search-results");
 
-    let formattedData = data.resp.replace(/\n/g, '<br>');
+    let formattedData = data.resp.replace(/\n/g, '<br><br>');
     resultsDiv.innerHTML = '<h2>Total views: '+data.accessCount+'</h2><br>'
                             +formattedData;
 }
