@@ -72,12 +72,10 @@ input{
 }
 
 #popular{
-    margin-top: 8%;
     position: relative;
     height: 70vh;
     width: 100vw;
     display: block;
-    padding-top: 10%;
     text-align: center;
     align-content: center;
 }
@@ -92,12 +90,11 @@ input{
 }
 
 #content-section {
-    margin-top: 8%;
     position: relative;
     height: 70vh;
     width: 100vw;
     display: flex;
-    padding-top: 10%;
+    /* padding-top: 5%; */
     text-align: center;
     overflow: auto;
 }
