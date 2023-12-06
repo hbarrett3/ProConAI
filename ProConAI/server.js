@@ -325,20 +325,6 @@ async function generation(newQuery) {
     });
 }
 
-/**
- * debug function that prints out the database
- */
-app.get('/get/procons/', (req, res) => {
-    let p = ProCon.find({}).exec();
-    p.then((documents) => {
-        res.end(JSON.stringify(documents));
-    })
-    .catch((error) => {
-        res.status(500).json({ status: "error", message: error });
-        console.log(error);
-    })
-});
-
 // COMMENTS ----------------------------------------------------------------------------------------------------------------
 
 
@@ -349,17 +335,7 @@ app.get('/get/procons/', (req, res) => {
 app.post('/search/procon/', async (req, res)=> {
     try {
         results = await generation(req.body.name)
-        res.json(results);
-    } catch (error) {
-        console.error(error);
-        res.status(500).send('An error occurred in /search/procon');
-    }
-});
-
-// method for regenerating ProCon
-app.post('/search/regenerate/', async (req, res)=> {
-    try {
-        results = await generateNew(req.body.name)
+        console.log("line 358", results);
         res.json(results);
     } catch (error) {
         console.error(error);
