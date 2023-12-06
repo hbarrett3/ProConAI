@@ -69,7 +69,11 @@ var ProCon = mongoose.model('ProCon', ProConSchema);
 let sessions = {};
 app.use(cookieParser()); // used for parsing cookies
     
-// adds user to sessions, giving them a session ID and a time
+/**
+ * Adds a session for the specified username.
+ * @param {string} username - The username for the session.
+ * @returns {number} - The session ID.
+ */
 function addSession(username) {
     let sid = Math.floor(Math.random() * 1000000000);
     let now = Date.now();
@@ -77,7 +81,9 @@ function addSession(username) {
     return sid;
 }
 
-// removes users from session if their time has expired (set to 5 minutes)
+/**
+ * Removes expired sessions from the sessions object.
+ */
 function removeSessions() {
     let now = Date.now();
     let usernames = Object.keys(sessions);
@@ -92,7 +98,14 @@ function removeSessions() {
     
 setInterval(removeSessions, 2000); // calls removeSessions() every 2 seconds
 
-// ensures that the user trying to comment has a valid session
+/**
+ * Authenticates the user based on the provided request and response objects.
+ * If the user is authenticated, the next middleware function is called.
+ * If the user is not authenticated, an error response is sent.
+ * @param {Object} req - The request object.
+ * @param {Object} res - The response object.
+ * @param {Function} next - The next middleware function.
+ */
 function authenticate(req, res, next) {
     let c = req.cookies.login;
     if (c != undefined) {
@@ -194,7 +207,7 @@ app.post('/add/user/', (req, res) => {
 });
 
 // HOME ----------------------------------------------------------------------------------------------------------------
-
+// gets most popular comments
 app.get('/get/popular/', (req, res)=> {
     let p = ProCon.find({}).exec();
     p.then((documents) => {
@@ -207,7 +220,6 @@ app.get('/get/popular/', (req, res)=> {
 });
 
 // COMMENT ----------------------------------------------------------------------------------------------------------------
-
 // called by search/script.js
 // adds comment to procon
 app.post('/add/comment/', (req, res) => {
@@ -302,6 +314,13 @@ async function generateNew(query) {
         .join(' ');
     }
   
+
+/**
+ * Compares two queries based on the similarity of their keywords.
+ * @param {string} query1 - The first query.
+ * @param {string} query2 - The second query.
+ * @returns {number} - The similarity score between 0 and 1.
+ */
   function compareKeywords(query1, query2){
       words1 = new Set(query1.split(' '));
       words2 = new Set(query2.split(' '));
@@ -312,6 +331,13 @@ async function generateNew(query) {
       return intersection.size / union.size;
   }
 
+  
+/**
+ * Compares two queries and returns the Jaccard similarity coefficient.
+ * @param {string} query1 - The first query.
+ * @param {string} query2 - The second query.
+ * @returns {number} The Jaccard similarity coefficient between the two queries.
+ */
   function compareQueries(query1, query2){
     words1 = new Set(query1.split(' '));
     words2 = new Set(query2.split(' '));
@@ -384,9 +410,6 @@ app.get('/get/procons/', (req, res) => {
         console.log(error);
     })
 });
-
-// COMMENTS ----------------------------------------------------------------------------------------------------------------
-
 
 
 // ----------------------------------------------------------------------------------------------------------------

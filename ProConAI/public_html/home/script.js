@@ -15,25 +15,26 @@
 
 // COMMON CODE -----------------------------------------------------------------------------------------------------------
 
-// this function sends the user directly to the search page of the given name
+/**
+ * Redirects the user to the search page.
+ * @param {string} name - The name of the user.
+ */
 function goToSearchPage(name){
-    window.location.href = '../search/index.html'; // should be one below
-    // window.location.href = '../search/index.html/get/'+name;
+    window.location.href = '../search/index.html';
 }
 
-// this function sends the user directly to the home page
+/**
+ * Redirects the user to the home page.
+ */
 function goToHomePage(){
     window.location.href = '../home/index.html';
 }
 
 // SEARCHING CODE -----------------------------------------------------------------------------------------------------------
 
-// function displaySearchResults(data) {
-//     let resultsDiv = document.getElementById("search-results");
-
-//     resultsDiv.innerHTML = data;
-// }
-
+/**
+ * Performs a search based on the input value and redirects to the search results page.
+ */
 function search() {
     let search_input = document.getElementById("search-input");
 
@@ -46,8 +47,10 @@ function search() {
 
 // -----------------------------------------------------------------------------------------------------------
 
+/**
+ * Adds a new user by sending user data to the server.
+ */
 function fillPopular(){
-
     let p = fetch('/get/popular/');
     p.then( (response) => {
         return response.json();
