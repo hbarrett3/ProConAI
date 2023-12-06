@@ -12,6 +12,7 @@
     Description:
 
     This file contains the content for the login page for the website ProConAI
+    can handle redirects to the other pages on the site, does not contain search functionality
 
 -->
 
@@ -46,12 +47,12 @@
             
         </div>
 
+        <!-- Redirects to all other pages on the site -->
         <div id="links">
             <a class="link" href="../login/index.html">Login</a>
             <a class="link" href="../home/index.html">Home</a>
             <a class="link" id="help" href="../search/index.html">Help</a>
         </div>
-
     </div>
 
         
@@ -74,6 +75,8 @@
                         <td><label for="sign-up-password-input">Password:</label></td>
                         <td>
                             <input type="password" id="sign-up-password-input">
+                            <!-- handles the change of password from text to password type -->
+                            <!-- handles the the icon changing to represent what visibility the password field is -->
                             <i class="far fa-eye-slash" id="eyeSignup" onclick="showNewPass()" onmouseover="changeSignUpIcon()" onmouseleave="changeSignUpIcon()"></i>
                         </td>
                     </tr>
@@ -99,6 +102,8 @@
                     <tr>
                         <td><label for="login-password-input">Password:</label></td>
                         <td><input type="password" id="login-password-input">
+                            <!-- handles the change of password from text to password type -->
+                            <!-- handles the the icon changing to represent what visibility the password field is -->
                             <i class="far fa-eye-slash" id="eyeLogin" onclick="showPass()" onmouseover="changeLoginIcon()" onmouseleave="changeLoginIcon()"></i>
                         </td>
                     </tr>
@@ -107,14 +112,10 @@
 
                 <!--Button for logging in-->
                 <button id="login-button" onclick="login();">Login</button>
-
             </div>
-
         </div>
         
         <!--For access to javascript-->
         <script src="script.js"></script>
-        
     </body>
-
 </html>
