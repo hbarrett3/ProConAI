@@ -286,6 +286,17 @@ async function generateNew(query) {
           .map(token => stemmer.stem(token))
           .join(' ');
   }
+
+  /**
+   * normalizes the given query
+   * @param {String} query 
+   * @returns 
+   */
+  function normalizeQuery(query){
+    return tokenizer.tokenize(query.toLowerCase())
+        .map(token => stemmer.stem(token))
+        .join(' ');
+    }
   
   function compareKeywords(query1, query2){
       words1 = new Set(query1.split(' '));
@@ -295,6 +306,16 @@ async function generateNew(query) {
       let union = new Set([...words1, ...words2]);
   
       return intersection.size / union.size;
+  }
+
+  function compareQueries(query1, query2){
+    words1 = new Set(query1.split(' '));
+    words2 = new Set(query2.split(' '));
+
+    let intersection = new Set([...words1].filter(x => words2.has(x)));
+    let union = new Set([...words1, ...words2]);
+
+    return intersection.size / union.size;
   }
 //   similarityScore = compareKeywords(normalizeKeywords("dog, pet, ownership"), normalizeKeywords("dog, buying, ownership"));
 //   console.log('Similarity Score:', similarityScore);
@@ -313,8 +334,11 @@ async function generation(newQuery) {
             let documents = await ProCon.find({}).exec();
 
             documents.forEach(doc => {
+                let qSimilarityScore = compareQueries(normalizeQuery(newQuery), normalizeQuery(doc.name));
                 let similarityScore = compareKeywords(normalizeKeywords(newKeywords), normalizeKeywords(doc.keywords));
-                if (similarityScore > 0.5) {
+                if (qSimilarityScore > 0.5) {
+                    map.set(doc, qSimilarityScore);
+                } else if (similarityScore > 0.5) {
                     map.set(doc, similarityScore);
                 }
             });

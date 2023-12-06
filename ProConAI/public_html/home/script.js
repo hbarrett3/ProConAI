@@ -38,8 +38,8 @@ function search() {
     let search_input = document.getElementById("search-input");
 
     if (search_input.value.length > 0) {
-        // Redirect to the new page with the search query as a parameter
-        window.location.href = 'search/index.html?query=' + encodeURIComponent(search_input.value);
+        // Redirect to the search page, filling in the search field with the query, and calling search(false) in the search pages's script.js
+        
     }
 }
 
