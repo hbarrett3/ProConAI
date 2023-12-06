@@ -79,7 +79,7 @@ function displayComments(comments, procon_id) {
     let inner = '<div id="comments"><h1>Comments ('+comments.length+')</h1><br><label for="comment-input">'+
                 'Add comment: <input type="text" id="comment-input" placeholder="ex: I agree/disagree with...">' +
                 '<button id="comment-button" data-proconid="' + procon_id + 
-                '" onclick="addComment(this)">Comment</button><br><br>';
+                '" onclick="addComment(this); search(false)">Comment</button><br><br>';
 
     if (comments.length == 0){
         inner += '<br><div>Be the first to comment!</div><br>';
