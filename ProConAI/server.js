@@ -32,6 +32,10 @@ db.on('error', () => {
     console.log('MongoDB connection error')
 });
 
+app.get('/', (req, res) => {
+    res.redirect('/home/index.html');
+});
+
 // SCHEMAS ----------------------------------------------------------------------------------------------------------------
 
 // Schema for users
