@@ -17,16 +17,29 @@
 // COMMON CODE -----------------------------------------------------------------------------------------------------------
 
 // this function sends the user directly to the search page of the given name
+
+/**
+ * Navigates to the search page.
+ * @param {string} name - The name parameter to pass to the search page.
+ */
 function goToSearchPage(name){
     window.location.href = '../search/index.html'; // should be one below
     // window.location.href = '../search/index.html/get/'+name;
 }
 
-// this function sends the user directly to the home page
+/**
+ * Redirects the user to the home page.
+ */
 function goToHomePage(){
     window.location.href = '../home/index.html';
 }
 
+/**
+ * Adds a comment to the server.
+ * 
+ * @param {HTMLElement} buttonElement - The button element that triggered the comment addition.
+ * @returns {Promise} - A promise that resolves when the comment is successfully added or rejects with an error.
+ */
 function addComment(buttonElement){
 
     let procon_id = buttonElement.getAttribute('data-proconid');
@@ -73,6 +86,12 @@ function addComment(buttonElement){
 
 }
 
+/**
+ * Displays comments on the webpage.
+ * 
+ * @param {Array} comments - An array of comment objects.
+ * @param {string} procon_id - The ID of the procon.
+ */
 function displayComments(comments, procon_id) {
     let commentsDiv = document.getElementById("comments-div");
     commentsDiv.style.display = 'none';
@@ -93,6 +112,13 @@ function displayComments(comments, procon_id) {
     commentsDiv.style.display = 'block';
 }
 
+/**
+ * Displays the search results on the webpage.
+ * 
+ * @param {Object} data - The search results data.
+ * @param {string} data.resp - The formatted search results.
+ * @param {number} data.accessCount - The total number of views.
+ */
 function displaySearchResults(data) {
 
     let resultsDiv = document.getElementById("search-results");
@@ -103,8 +129,10 @@ function displaySearchResults(data) {
 }
 
 /**
- * 
- * @param {boolean} regenerate - if true, will regenerate the page
+ * Performs a search operation based on the given input.
+ * If `regenerate` is true, it sends a request to the server to regenerate the search results.
+ * Otherwise, it sends the ProCon data to the server for search.
+ * @param {boolean} regenerate - Indicates whether to regenerate the search results.
  */
 function search(regenerate){
     // window.location.href = 'search/index.html?query=' + encodeURIComponent(search_input.value);
@@ -185,6 +213,11 @@ function search(regenerate){
     }
 }
 
+/**
+ * Fills the search input field with the given query.
+ * 
+ * @param {string} query - The query to fill the search input with.
+ */
 function fillSearchInput(query) {
     let searchInput = document.getElementById("search-input");
     searchInput.value = query;

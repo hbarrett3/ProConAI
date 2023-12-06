@@ -16,16 +16,26 @@
 // COMMON CODE -----------------------------------------------------------------------------------------------------------
 
 // this function sends the user directly to the search page of the given name
+/**
+ * Redirects the user to the search page.
+ * @param {string} name - The name of the user.
+ */
 function goToSearchPage(name){
     window.location.href = '../search/index.html'; // should be one below
     // window.location.href = '../search/index.html/get/'+name;
 }
 
-// this function sends the user directly to the home page
+
+/**
+ * Redirects the user to the home page.
+ */
 function goToHomePage(){
     window.location.href = '../home/index.html';
 }
 
+/**
+ * Performs a search based on the input value and redirects to the search results page.
+ */
 function search() {
     let search_input = document.getElementById("search-input");
 
@@ -37,6 +47,9 @@ function search() {
 
 // -----------------------------------------------------------------------------------------------------------
 
+/**
+ * Adds a new user by sending user data to the server.
+ */
 function addUser(){
 
     // grabbing input elements from index.html
@@ -92,9 +105,10 @@ function addUser(){
     }
 }
 
-// this function logs in a user
-// it makes a request to the server, and if it is successful, meaning the username and passwords match,
-// then the user is logged in, a session is started for them, and they are directed to the home page
+
+/**
+ * Performs a login operation by sending the user credentials to the server for verification.
+ */
 function login() {
 
     let username_input = document.getElementById('login-username-input').value;
@@ -147,6 +161,9 @@ function showNewPass() {
     }
 }
 
+/**
+ * Toggles the visibility icon for the sign-up form.
+ */
 function changeSignUpIcon() {
     var x = document.getElementById('eyeSignup');
     if (x.className ==="far fa-eye-slash") {
@@ -156,6 +173,9 @@ function changeSignUpIcon() {
     }
 }
 
+/**
+ * Changes the login icon based on its current state.
+ */
 function changeLoginIcon() {
     var x = document.getElementById('eyeLogin');
     if (x.className ==="far fa-eye-slash") {
