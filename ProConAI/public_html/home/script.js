@@ -63,7 +63,9 @@ function fillPopular(){
             if (i > 4) {
                 break;
             }
-            html += '<a class="popular-searches" href="../search/index.html?name=' + encodeURIComponent(objects[i].name) + '">' + objects[i].name + '</a><h2>' + objects[i].accessCount + '</h2><br><br>';
+            html += '<a class="popular-searches" href="../search/index.html?name=' + 
+                    encodeURIComponent(objects[i].name) + '">' + objects[i].name + 
+                    '</a><p>Total Views: ' + objects[i].accessCount + '</p><br><br>';
         }
         let popular_div = document.getElementById('popular-div');
         popular_div.innerHTML = html;
