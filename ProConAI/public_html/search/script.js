@@ -14,9 +14,6 @@
 */
 // QUERY PROCESSING -----------------------------------------------------------------------------------------------------------
 
-
-    
-
 // COMMON CODE -----------------------------------------------------------------------------------------------------------
 
 // this function sends the user directly to the search page of the given name
@@ -36,9 +33,6 @@ function addComment(buttonElement){
     let comment_input = document.getElementById("comment-input");
 
     if (comment_input.value.length > 0){
-
-        window.alert("ADDING COMMENT\n"+comment_input.value);
-        window.alert("procon_id\n"+procon_id);
 
         // Create new comment
         let commentData = {
@@ -60,8 +54,7 @@ function addComment(buttonElement){
             }
             // success
             else{
-                window.alert("Comment Successfully Added!");
-
+                window.alert("ADDING COMMENT\n"+comment_input.value);
                 // setting input field to empty for convenience
                 comment_input.value = "";
 
@@ -81,12 +74,12 @@ function addComment(buttonElement){
 }
 
 function displayComments(comments, procon_id) {
-    console.log("COMMENTS:");
-    console.log(comments);
-    let commentsDiv = document.getElementById("comments");
-    let inner = '<label for="comment-input">Add comment: <input type="text" id="comment-input">' +
-         '<button id="comment-button" data-proconid="' + procon_id + 
-         '" onclick="addComment(this)">Comment</button><br><br><br>Comments ('+comments.length+'):<br><br>';
+    let commentsDiv = document.getElementById("comments-div");
+    commentsDiv.style.display = 'none';
+    let inner = '<div id="comments"><h1>Comments ('+comments.length+')</h1><br><label for="comment-input">'+
+                'Add comment: <input type="text" id="comment-input" placeholder="ex: I agree/disagree with...">' +
+                '<button id="comment-button" data-proconid="' + procon_id + 
+                '" onclick="addComment(this)">Comment</button><br><br>';
 
     if (comments.length == 0){
         inner += '<br><div>Be the first to comment!</div><br>';
@@ -95,7 +88,9 @@ function displayComments(comments, procon_id) {
     for (let i = 0; i < comments.length; i++){
         inner += '<br><div>'+comments[i].author+' says: '+comments[i].comment+'</div><br>';
     }
+    inner += '</div>';
     commentsDiv.innerHTML = inner;
+    commentsDiv.style.display = 'block';
 }
 
 function displaySearchResults(data) {
@@ -117,7 +112,7 @@ function search(regenerate){
     let search_input = document.getElementById("search-input");
     let loadingAnimation = document.getElementById("loading-animation");
     let resultsDiv = document.getElementById("search-results");
-    let commentsDiv = document.getElementById("comments");
+    let commentsDiv = document.getElementById("comments-div");
 
     // checking if input is not empty (will execute if true)
     if (search_input.value.length > 0)
@@ -125,6 +120,7 @@ function search(regenerate){
         resultsDiv.innerHTML = '';
         commentsDiv.innerHTML = '';
         loadingAnimation.style.display = 'block';
+        commentsDiv.style.display = 'none';
         // Create new ProCon
         let proConData = {
             name: search_input.value
