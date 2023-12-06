@@ -26,12 +26,6 @@ function goToHomePage(){
     window.location.href = '../home/index.html';
 }
 
-// this function sends the user directly to their profile page if they're logged in
-function goToCommentsPage(name){
-    window.location.href = '../comments/index.html'; // should be one below
-    // window.location.href = '../comments/index.html/get/'+name;
-}
-
 // SEARCHING CODE -----------------------------------------------------------------------------------------------------------
 
 // function displaySearchResults(data) {
@@ -54,22 +48,30 @@ function search() {
 
 function fillPopular(){
 
-    let p = fetch('/get/popular');
+    let p = fetch('/get/popular/');
     p.then( (response) => {
         return response.json();
     })
     // success
     .then((objects) => {
+
+        objects.sort((a, b) => b.accessCount - a.accessCount); // sorting
         // displaying items on home page
         let html = '';
-        for (i in objects) {
-            html += '<h2 class="example">'+objects[i].name+'</h2>';
-            // html += '<a class = "popular-searches" href = "../search/index.html/'+ objects[i].name +'"></>"' + '<br><br>';
+        
+        for (let i = 0; i < objects.length; i++) {
+            if (i > 4){
+                break;
+            }
+            html += '<a class = "popular-searches" href = "../search/index.html/'+ objects[i].name +
+                    '">'+objects[i].name+'</a><h2>'+objects[i].accessCount+'</h2><br><br>';
         }
-      let table = document.getElementById('popular-table');
-      table.innerHTML = html;
+      let popular_div = document.getElementById('popular-div');
+      popular_div.innerHTML = html;
     }).catch(() => {
         alert('something went wrong');
     });
 
 }
+
+fillPopular();

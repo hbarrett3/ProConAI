@@ -26,12 +26,6 @@ function goToHomePage(){
     window.location.href = '../home/index.html';
 }
 
-// this function sends the user directly to their profile page if they're logged in
-function goToCommentsPage(name){
-    window.location.href = '../comments/index.html'; // should be one below
-    // window.location.href = '../comments/index.html/get/'+name;
-}
-
 function search() {
     let search_input = document.getElementById("search-input");
 
@@ -55,8 +49,7 @@ function addUser(){
         // Create new user
         let userData = {
             username: username_input.value,
-            password: password_input.value,
-            favorites: []
+            password: password_input.value
         };
         
         // Send the user data to the server

@@ -70,16 +70,22 @@ input{
     width: 200px;
 }
 
-#content-section{
+#popular{
     margin-top: 8%;
     position: relative;
     height: 70vh;
     width: 100vw;
-    display: flex;
+    display: block;
     padding-top: 10%;
     text-align: center;
+    align-content: center;
+}
+
+.popular-searches{
+    font-size: x-large;
+    color: white;
 }
 
 .div{
-    width: 50vw;
+    width: 100vw;
 }

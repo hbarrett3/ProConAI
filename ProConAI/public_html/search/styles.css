@@ -14,7 +14,7 @@
 */
 
 body{
-    height: 100vh;
+    height: auto;
     width: 100vw;
     margin: 0%;
     display: flex;
@@ -85,6 +85,10 @@ body{
 input{
     margin-top: 10px;
     width: 200px;
+}
+
+#comments{
+    position: relative;
 }
 
 .loader {

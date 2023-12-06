@@ -38,36 +38,32 @@ db.on('error', () => {
 var UserSchema = new mongoose.Schema({
     username: String,
     password: String,
-    favorites: [String] // should be ProConSchema
 });
 var User = mongoose.model('User', UserSchema);
+
+// Schema for Comments
+var CommentSchema = new mongoose.Schema({
+    author: String,
+    comment: String,
+    procon_id: String
+});
+var Comment = mongoose.model('Comment', CommentSchema);
 
 // Schema for ProCons
 var ProConSchema = new mongoose.Schema({
     name: String,
     accessCount: Number,
     resp: String,
-    keywords: String
+    keywords: String,
+    comments: [CommentSchema]
 });
 var ProCon = mongoose.model('ProCon', ProConSchema);
-
-// Schema for AIResponses
-var AIResponseSchema = new mongoose.Schema({
-    name: String,
-    
-});
-var AIResponse = mongoose.model('AIResponse', AIResponseSchema);
-
-// Schema for UserPosts
-var UserPostSchema = new mongoose.Schema({
-    name: String,
-});
-var UserPost = mongoose.model('UserPost', UserPostSchema);
 
 // SESSIONS and AUTHENTICATION -----------------------------------------------------------------------------------------
 
 // object for holding current user sessions
 let sessions = {};
+app.use(cookieParser()); // used for parsing cookies
     
 // adds user to sessions, giving them a session ID and a time
 function addSession(username) {
@@ -92,13 +88,11 @@ function removeSessions() {
     
 setInterval(removeSessions, 2000); // calls removeSessions() every 2 seconds
 
-// ensures that the user trying to access session-only pages has a valid session
-// sends user to login page if they don't have a session or are not logged in
+// ensures that the user trying to comment has a valid session
 function authenticate(req, res, next) {
     let c = req.cookies.login;
-    console.log('auth request:');
-    // if there are no cookies
     if (c != undefined) {
+        console.log('auth request:');
         // if there are cookies, but no users with sessions
         if (sessions[c.username] != undefined && 
             sessions[c.username].id == c.sessionID) {
@@ -111,19 +105,18 @@ function authenticate(req, res, next) {
         }
     } 
     else {
-        res.redirect('/login/index.html');  // send to login page
+        res.status(401).json({ status: "error", message: "You need to be logged in to comment" }); // display message for authentication
     }
 }
     
 app.use(parser.json()); // used for parsing JSON objects
 app.use(express.json());
 app.use(cors()); // allows access
-app.use(cookieParser()); // used for parsing cookies
 
 // ACCESS ----------------------------------------------------------------------------------------------------------------
 
 app.use(express.static('public_html')); // allows access to home
-// app.use('*', authenticate);
+app.use('/add/comment/', authenticate);
 
 // LOGIN ----------------------------------------------------------------------------------------------------------------
 
@@ -174,8 +167,7 @@ app.post('/add/user/', (req, res) => {
         if (documents.length == 0){
             let newUser = new User({
                 username: req.body.username,
-                password: req.body.password,
-                favorties: []
+                password: req.body.password
             });
             newUser.save()
             .then(() => {
@@ -199,11 +191,10 @@ app.post('/add/user/', (req, res) => {
 
 // HOME ----------------------------------------------------------------------------------------------------------------
 
-app.get('/get/popular/', ()=> {
+app.get('/get/popular/', (req, res)=> {
     let p = ProCon.find({}).exec();
     p.then((documents) => {
-        for (var i = 0; i < documents.length; )
-        res.end(JSON.stringify(documents[i]));
+        res.end(JSON.stringify(documents));
     })
     .catch((error) => {
         res.status(500).json({ status: "error", message: error });
@@ -211,9 +202,34 @@ app.get('/get/popular/', ()=> {
     })
 });
 
-// PROFILE ----------------------------------------------------------------------------------------------------------------
+// COMMENT ----------------------------------------------------------------------------------------------------------------
 
-
+// called by search/script.js
+// adds comment to procon
+app.post('/add/comment/', (req, res) => {
+    let p = ProCon.find({_id: req.body.procon_id}).exec();
+    p.then((documents) => {
+        let newComment = new Comment({
+            comment: req.body.comment,
+            author: req.cookies.login.username,
+            procon_id: req.body.procon_id
+        });
+        newComment.save()
+        .then(() => {
+            documents[0].comments.push(newComment);
+            documents[0].save();
+            res.status(200).json({ status: "success", message: "Comment added!" });
+        })
+        .catch((error) => {
+            console.log("PROBLEM ADDING COMMENT");
+            console.log(error);
+        });
+    })
+    .catch((error) => {
+        res.status(500).json({ status: "error", message: error });
+        console.log(error);
+    })
+});
 
 // SEARCH ----------------------------------------------------------------------------------------------------------------
 /**
@@ -307,17 +323,19 @@ async function generation(newQuery) {
                 let sortedMap = new Map([...map.entries()].sort((a, b) => b[1] - a[1]));
                 let firstEntry = sortedMap.entries().next().value[0];
                 firstEntry.accessCount++;
-                resolve(firstEntry.resp);
+                firstEntry.save();
+                resolve(firstEntry);
             } else {
                 let respValue = await generateNew(newQuery);
                 let newEntry = new ProCon({
                     name: newQuery,
                     accessCount: 1,
                     resp: respValue,
-                    keywords: newKeywords
+                    keywords: newKeywords,
+                    comments: []
                 });
                 await newEntry.save();
-                resolve(newEntry.resp);
+                resolve(newEntry);
             }
         } catch (error) {
             reject(error);
@@ -348,7 +366,7 @@ app.get('/get/procons/', (req, res) => {
 // method for getting ProCon
 app.post('/search/procon/', async (req, res)=> {
     try {
-        results = await generation(req.body.name)
+        let results = await generation(req.body.name);
         res.json(results);
     } catch (error) {
         console.error(error);
