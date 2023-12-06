@@ -43,7 +43,11 @@ function displaySearchResults(data) {
     resultsDiv.innerHTML = formattedData;
 }
 
-function search(){
+/**
+ * 
+ * @param {boolean} regenerate - if true, will regenerate the page
+ */
+function search(regenerate){
     // window.location.href = 'search/index.html?query=' + encodeURIComponent(search_input.value);
 
     let search_input = document.getElementById("search-input");
@@ -59,33 +63,58 @@ function search(){
         let proConData = {
             name: search_input.value,
         };
-        
-        // Send the ProCon data to the server
-        fetch('/search/procon/', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(proConData),
-        })
-        .then(response => {
-            if (!response.ok) {
-                throw new Error('Network response was not ok ' + response.statusText);
-            }
-            return response.json();
-        })
-        .then((data) => {
-            // console.log("Server Response:", data); // Log the response data
-            loadingAnimation.style.display = 'none';
-            displaySearchResults(data);
-            // goToSearchPage(search_input.value);
-        })
-        // fail
-        .catch((error) => {
-            loadingAnimation.style.display = 'none';
-            window.alert("SERVER NOT RESPONDING");
-            console.error("Error:", error);
-        });
+        // if regenerate is true
+        if (regenerate) {
+            fetch('/search/regenerate/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(proConData),
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok ' + response.statusText);
+                }
+                return response.json();
+            })
+            .then((data) => {
+                loadingAnimation.style.display = 'none';
+                displaySearchResults(data);
+            })
+            // fail
+            .catch((error) => {
+                loadingAnimation.style.display = 'none';
+                window.alert("SERVER NOT RESPONDING");
+                console.error("Error:", error);
+            });
+        }
+        else {
+            // Send the ProCon data to the server
+            fetch('/search/procon/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(proConData),
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok ' + response.statusText);
+                }
+                return response.json();
+            })
+            .then((data) => {
+                loadingAnimation.style.display = 'none';
+                displaySearchResults(data);
+            })
+            // fail
+            .catch((error) => {
+                loadingAnimation.style.display = 'none';
+                window.alert("SERVER NOT RESPONDING");
+                console.error("Error:", error);
+            });
+        }
     }
     else{
         window.alert("Field must be filled in");

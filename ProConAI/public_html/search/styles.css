@@ -56,13 +56,20 @@ body{
 
 #search-results {
     display: block;
-    margin-top: 140px;
+    margin-top: 10px;
     padding: 10px;
     word-wrap: break-word;
     overflow: hidden;
 }
 
-
+#regenerate-button {
+    display: block;
+    margin-top: 140px;
+    margin-left: 20px;
+    padding: 10px;
+    word-wrap: break-word;
+    overflow: hidden;
+}
 
 .link{
     color: white;
