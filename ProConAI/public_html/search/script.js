@@ -170,6 +170,7 @@ function search(regenerate){
             })
             .then((data) => {
                 loadingAnimation.style.display = 'none';
+                // console.log(data);
                 displaySearchResults(data);
                 displayComments(data.comments, data._id);
             })
@@ -197,6 +198,7 @@ function search(regenerate){
             })
             .then((data) => {
                 loadingAnimation.style.display = 'none';
+                // console.log(data);
                 displaySearchResults(data);
                 displayComments(data.comments, data._id);
             })
